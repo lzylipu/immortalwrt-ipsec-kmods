@@ -46,17 +46,17 @@ make package/kernel/linux/compile -j"$(nproc)" V=s
 
 mkdir -p bin/targets bin/packages
 find bin/targets bin/packages -type f \( \
-  -name 'kmod-ipsec_*.apk' -o \
-  -name 'kmod-ipsec4_*.apk' -o \
-  -name 'kmod-ipsec6_*.apk' -o \
-  -name 'kmod-ipt-ipsec_*.apk' -o \
-  -name 'kmod-xfrm-interface_*.apk' -o \
-  -name 'kmod-nft-xfrm_*.apk' \
+  -name 'kmod-ipsec-*.apk' -o \
+  -name 'kmod-ipsec4-*.apk' -o \
+  -name 'kmod-ipsec6-*.apk' -o \
+  -name 'kmod-ipt-ipsec-*.apk' -o \
+  -name 'kmod-xfrm-interface-*.apk' -o \
+  -name 'kmod-nft-xfrm-*.apk' \
 \) -exec cp -v {} "$OUTDIR"/ \;
 
 cd "$OUTDIR"
 for required in kmod-ipsec kmod-ipsec4 kmod-ipsec6 kmod-ipt-ipsec; do
-  ls "${required}"_*.apk >/dev/null 2>&1 || { echo "Missing required APK: $required"; exit 1; }
+  ls "${required}"-*.apk >/dev/null 2>&1 || { echo "Missing required APK: $required"; exit 1; }
 done
 ls -1 *.apk | sort > assets.txt
 sha256sum *.apk assets.txt > SHA256SUMS

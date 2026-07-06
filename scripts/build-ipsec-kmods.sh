@@ -40,7 +40,8 @@ tar --zstd -xf "$SDK_NAME" --strip-components=1
 make defconfig
 make package/kernel/linux/compile -j"$(nproc)" V=s
 
-find bin/targets "$PWD/bin/packages" -type f \( \
+mkdir -p bin/targets bin/packages
+find bin/targets bin/packages -type f \( \
   -name 'kmod-ipsec_*.apk' -o \
   -name 'kmod-ipsec4_*.apk' -o \
   -name 'kmod-ipsec6_*.apk' -o \

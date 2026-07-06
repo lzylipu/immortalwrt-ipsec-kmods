@@ -36,8 +36,12 @@ tar --zstd -xf "$SDK_NAME" --strip-components=1
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-# Build only kernel-package APKs needed by Docker IKEv2/IPsec on host kernel.
+# Use the exact release build config; SDK defaults do not necessarily select
+# optional kmods, so relying on defconfig alone can build no IPsec APKs.
+curl -fsSL "$BASE/config.buildinfo" -o .config
 make defconfig
+
+# Build only kernel-package APKs needed by Docker IKEv2/IPsec on host kernel.
 make package/kernel/linux/compile -j"$(nproc)" V=s
 
 mkdir -p bin/targets bin/packages

@@ -66,10 +66,22 @@ jobs:
 
           if not version:
               html = fetch_text(base_releases)
-              versions = sorted(set(re.findall(r'href="(25\.12\.[^/]+?)/"', html)), key=version_key)
+              versions = sorted(set(re.findall(r'href="(25\.12\.[^/]+?)/"', html)), key=version_key, reverse=True)
               if not versions:
                   raise SystemExit('No 25.12.x release found at ' + base_releases)
-              version = versions[-1]
+              selected = None
+              for candidate in versions:
+                  candidate_base = f'https://downloads.immortalwrt.org/releases/{candidate}/targets/{target}'
+                  try:
+                      fetch_text(candidate_base + '/version.buildinfo')
+                      selected = candidate
+                      break
+                  except urllib.error.HTTPError as e:
+                      if e.code != 404:
+                          raise
+              if not selected:
+                  raise SystemExit(f'No 25.12.x release with target metadata for {target}')
+              version = selected
 
           base = f'https://downloads.immortalwrt.org/releases/{version}/targets/{target}'
           revision = fetch_text(base + '/version.buildinfo').splitlines()[0].strip()

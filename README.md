@@ -35,3 +35,12 @@ Release 会上传：
 - `SHA256SUMS`
 
 `assets.txt` 给 ImageBuilder 下载脚本使用；`buildinfo.txt` 用来做版本/target/arch 匹配检查。
+
+
+## 自动发布逻辑
+
+- 手动运行 workflow 时，`immortalwrt_version` 留空会自动选择 ImmortalWrt downloads 中最新的 `25.12.x`。
+- 每周二会自动检查一次新 `25.12.x` release。
+- Release tag 自动格式：`immortalwrt-<version>-x86-64-<revision-short>`，例如 `immortalwrt-25.12.0-x86-64-r37854`。
+- 如果对应 tag 已存在，workflow 会直接跳过，避免重复编译。
+- 产物包括 `assets.txt`、`SHA256SUMS`、`buildinfo.txt` 和 IPsec/XFRM kmod `.apk`。

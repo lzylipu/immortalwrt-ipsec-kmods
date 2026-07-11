@@ -57,13 +57,15 @@ grep -qx "IMMORTALWRT_VERSION=${IMMORTALWRT_VERSION}" buildinfo.txt || { echo "�
 grep -qx "TARGET=${TARGET_PATH}" buildinfo.txt || { echo "❌ target mismatch" ; cat buildinfo.txt ; exit 1 ; }
 grep -qx "ARCH_PACKAGES=${ARCH_PACKAGES}" buildinfo.txt || { echo "❌ arch mismatch" ; cat buildinfo.txt ; exit 1 ; }
 
-required='kmod-ipsec kmod-ipsec4 kmod-ipsec6 kmod-ipt-ipsec \
-  kmod-crypto-seqiv kmod-crypto-echainiv kmod-crypto-geniv \
-  kmod-crypto-gcm kmod-crypto-ghash kmod-crypto-sha256 \
-  kmod-crypto-sha512 kmod-crypto-authenc kmod-crypto-aead \
-  kmod-crypto-ctr kmod-crypto-gf128 kmod-crypto-null \
-  kmod-crypto-rng kmod-crypto-hash kmod-crypto-manager'
-for pkg in $required; do
+required=(
+  kmod-ipsec kmod-ipsec4 kmod-ipsec6 kmod-ipt-ipsec
+  kmod-crypto-seqiv kmod-crypto-echainiv kmod-crypto-geniv
+  kmod-crypto-gcm kmod-crypto-ghash kmod-crypto-sha256
+  kmod-crypto-sha512 kmod-crypto-authenc kmod-crypto-aead
+  kmod-crypto-ctr kmod-crypto-gf128 kmod-crypto-null
+  kmod-crypto-rng kmod-crypto-hash kmod-crypto-manager
+)
+for pkg in "${required[@]}"; do
   grep -q "^${pkg}-.*\.apk$" assets.txt || {
     echo "❌ missing required kmod asset: ${pkg}"
     cat assets.txt

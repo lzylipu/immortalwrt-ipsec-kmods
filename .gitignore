@@ -1,0 +1,16 @@
+# Logs
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.apk
+assets.txt
+SHA256SUMS
+
+# IDE
+.idea/
+.vscode/
+*.swp
